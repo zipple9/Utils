@@ -14,7 +14,7 @@ public final class FileCopy {
     } // 工具类 其方法都是静态方法，故应将构造方法私有化
 
     /**
-     * 复制文件的集中方法
+     * 复制文件的几种方法
      * @param sourcePath
      * @throws IOException
      */
