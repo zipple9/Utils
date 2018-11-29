@@ -4,6 +4,7 @@ import com.wzy.Utils.File.FileCopy;
 import com.wzy.Utils.File.FileCount;
 import com.wzy.Utils.Search.binarySearch;
 import com.wzy.Utils.Sort.bubbleSort;
+import com.wzy.Utils.codeTransformation.GBKtoUTF8;
 import com.wzy.Utils.txtProcessing.ADFilter;
 
 import java.io.File;
@@ -43,7 +44,7 @@ public class tset {
 //        System.out.println((int)Math.floor(5.5));
 //        System.out.println(51>>>1);
 
-        ADFilter.deleteAD("C:\\Users\\Administrator\\Desktop\\t1.txt");
+        ADFilter.deleteAD("C:\\Users\\Administrator\\Desktop\\all.txt");
 
         boolean tf="&#65288;&#26825;&#33457;&#3".matches("(&#[\\d]+;)+(&#[\\d]+)");
         boolean tf2="（wwW.80txt.com 无弹窗广告）".matches("\\（.*80txt.*\\）");
@@ -53,10 +54,11 @@ public class tset {
         System.out.println(tf2);
 
 
-        String a="<.*>";
-        String aa=Integer.toHexString((int)a.charAt(0)+2);
-        System.out.println(aa);
-        System.out.println((char)Integer.parseInt(aa,16));
+//        String a="<.*>";                   //unicode  和字符 互转
+//        String aa=Integer.toHexString((int)a.charAt(0)+2);
+//        System.out.println(aa);
+//        System.out.println((char)Integer.parseInt(aa,16));
+        GBKtoUTF8.trans("免费在线作图，实时协作ProcessOn 支持流程图、思维导图、原型图、UML、网络拓扑图、组织结构图等");
 
 
 
