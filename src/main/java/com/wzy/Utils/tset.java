@@ -6,6 +6,7 @@ import com.wzy.Utils.File.FileCopy;
 import com.wzy.Utils.File.FileCount;
 import com.wzy.Utils.JSON.JSONUtil;
 import com.wzy.Utils.Search.binarySearch;
+import com.wzy.Utils.Sort.Tree;
 import com.wzy.Utils.Sort.bubbleSort;
 import com.wzy.Utils.codeTransformation.GBKtoUTF8;
 import com.wzy.Utils.txtProcessing.ADFilter;
@@ -28,8 +29,8 @@ public class tset {
 
         JSONObject obj1=JSONObject.parseObject("{code:'01',parentCode:'02'}");
         JSONObject obj2=JSONObject.parseObject("{code:'02',parentCode:'03'}");
-        JSONObject obj3=JSONObject.parseObject("{code:'03'}");
-        JSONObject obj4=JSONObject.parseObject("{code:'04'}");
+        JSONObject obj3=JSONObject.parseObject("{code:'03',parentCode:''}");
+        JSONObject obj4=JSONObject.parseObject("{code:'04',parentCode:''}");
         JSONObject obj5=JSONObject.parseObject("{code:'05',parentCode:'03'}");
 
 
@@ -40,23 +41,59 @@ public class tset {
         objList.add(obj4);
         objList.add(obj5);
 
+
+//        System.out.println(Tree.getChildren(objList,obj3));
+
         Map<String,JSONObject> objMap=new HashMap();
         for(JSONObject obj :objList){
             objMap.put(obj.get("code").toString(),obj);
         }
 
-        System.out.println(objMap);
+//        System.out.println(objMap);
         List<JSONObject> resultList=new ArrayList<>();
+        List<JSONObject> lastLevel=new ArrayList<>();
 
 
         for(int i=0;i<objList.size();i++){
             if(StringUtils.isEmpty(objList.get(i).get("parentCode").toString())){
-                System.out.println(i);
-                resultList.add(objList.get(i));
+                resultList.add(Tree.getChildren(objList,objList.get(i),"code","parentCode"));
                 objList.remove(objList.get(i));
                 i--;
             }
         }
+
+        System.out.println(resultList);
+        for(int i=0;i<objList.size();i++) {
+            String parentCode = objList.get(i).get("parentCode").toString();
+//            if(lastLevel.size()==0 && StringUtils.isEmpty(parentCode)){
+//                resultList.add(objList.get(i));
+//                objList.remove(objList.get(i));
+//                i--;
+//            }
+
+
+
+            for (int j = 0; j < resultList.size(); j++) {
+                //在resultList中找到上级，并给上级单位写children
+                if (parentCode.equals(resultList.get(j).get("code"))) {
+
+                    List<JSONObject> temp = (List) resultList.get(j).get("children");
+                    if (temp == null) {
+                        resultList.get(j).put("children", Lists.newArrayList(objList.get(i)));
+                    } else {
+                        temp.add(objList.get(i));
+                        resultList.get(j).put("children", temp);
+                    }
+                    lastLevel.add(objList.get(i));
+                    objList.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+//        System.out.println(objList);
+//
+//        System.out.println(resultList);
 
 
 //        Map<String,JSONObject> result=new HashMap();
