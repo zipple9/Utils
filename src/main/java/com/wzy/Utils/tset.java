@@ -1,5 +1,7 @@
 package com.wzy.Utils;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.wzy.Utils.File.FileCopy;
 import com.wzy.Utils.File.FileCount;
 import com.wzy.Utils.JSON.JSONUtil;
@@ -7,13 +9,14 @@ import com.wzy.Utils.Search.binarySearch;
 import com.wzy.Utils.Sort.bubbleSort;
 import com.wzy.Utils.codeTransformation.GBKtoUTF8;
 import com.wzy.Utils.txtProcessing.ADFilter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Created by wzy on 2018/11/6 17:48
@@ -23,46 +26,67 @@ public class tset {
 
     public static void main(String []args) throws IOException {
 
-//        for (int i = 0; i <1 ; i++) {
-//            try {
-////                FileCopy.copyFileUsingFileStreams(("F:/fitness log.xlsx"));
-//                FileCopy.fileCopyNIO("F:/fitness log.xlsx");
+        JSONObject obj1=JSONObject.parseObject("{code:'01',parentCode:'02'}");
+        JSONObject obj2=JSONObject.parseObject("{code:'02',parentCode:'03'}");
+        JSONObject obj3=JSONObject.parseObject("{code:'03'}");
+        JSONObject obj4=JSONObject.parseObject("{code:'04'}");
+        JSONObject obj5=JSONObject.parseObject("{code:'05',parentCode:'03'}");
+
+
+        List<JSONObject> objList=new ArrayList<>();
+        objList.add(obj1);
+        objList.add(obj2);
+        objList.add(obj3);
+        objList.add(obj4);
+        objList.add(obj5);
+
+        Map<String,JSONObject> objMap=new HashMap();
+        for(JSONObject obj :objList){
+            objMap.put(obj.get("code").toString(),obj);
+        }
+
+        System.out.println(objMap);
+        List<JSONObject> resultList=new ArrayList<>();
+
+
+        for(int i=0;i<objList.size();i++){
+            if(StringUtils.isEmpty(objList.get(i).get("parentCode").toString())){
+                System.out.println(i);
+                resultList.add(objList.get(i));
+                objList.remove(objList.get(i));
+                i--;
+            }
+        }
+
+
+//        Map<String,JSONObject> result=new HashMap();
+//        for(Map.Entry<String,JSONObject> entry:objMap.entrySet()){
 //
-//            }catch (Exception e){}
+//            //如果没有父级代码，直接将obj放入结果集
+//            String parentCode=entry.getValue().get("parentCode").toString();
+//            if(StringUtils.isEmpty(parentCode)){
+//                result.put(parentCode,entry.getValue());
+//            }
+//            //如果有父级代码，开始遍历
+//            else{
+//                //得到父级obj
+//                JSONObject parentObj=objMap.get(parentCode);
+//
+//                //为父级obj 添加children
+//                List<JSONObject> temp=(List)entry.getValue().get("children");
+//                if(temp==null){
+//                    parentObj.put("children", Lists.newArrayList(entry.getValue()));
+//                }else{
+//                    parentObj.put("children",temp.add(entry.getValue()));
+//
+//                }
+//
+//                objMap.put(parentCode,parentObj);
+//
+//
+//            }
 //
 //        }
-
-//        int a=FileCount.filesCountAll("F:\\迅雷下载\\DEEP_Win7x64_CJB");
-//        System.out.println(a);
-//        System.out.println(FileCount.filesCount("F:/迅雷下载"));
-
-//        int[] array={3,5,1,9,6,5,4,11,56,78,111,12,666,555,18,28,58,17,37,97,57,66};
-//
-//        array=bubbleSort.sort(array);
-//        System.out.println(Arrays.toString(array));
-//        System.out.println(binarySearch.search(array,666));
-//
-//        System.out.println((int)Math.floor(5.5));
-//        System.out.println(51>>>1);
-
-//        ADFilter.deleteAD("C:\\Users\\Administrator\\Desktop\\all.txt");
-//
-//        boolean tf="&#65288;&#26825;&#33457;&#3".matches("(&#[\\d]+;)+(&#[\\d]+)");
-//        boolean tf2="（wwW.80txt.com 无弹窗广告）".matches("\\（.*80txt.*\\）");
-//
-//
-//        System.out.println(tf);
-//        System.out.println(tf2);
-
-
-//        String a="<.*>";                   //unicode  和字符 互转
-//        String aa=Integer.toHexString((int)a.charAt(0)+2);
-//        System.out.println(aa);
-//        System.out.println((char)Integer.parseInt(aa,16));
-//        GBKtoUTF8.trans("免费在线作图，实时协作ProcessOn 支持流程图、思维导图、原型图、UML、网络拓扑图、组织结构图等");
-
-
-        JSONUtil.JSONTest();
 
 
     }
